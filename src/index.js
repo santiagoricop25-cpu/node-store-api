@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
+const oauthRoutes = require('./routes/oauth');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -40,10 +41,10 @@ app.use(
 
 app.use(healthRoutes);
 app.use(authRoutes);
+app.use(oauthRoutes);
 
-// A partir de aquí se van montando: /auth/google y /auth/apple (Fase 02),
-// /products (Fase 03), /cart y /orders (Fase 04), /webhooks/wompi (Fase 05),
-// /admin (Fase 06).
+// A partir de aquí se van montando: /products (Fase 03), /cart y /orders
+// (Fase 04), /webhooks/wompi (Fase 05), /admin (Fase 06).
 
 app.use((req, res) => {
   res.status(404).json({ error: 'not_found' });
