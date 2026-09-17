@@ -1,6 +1,6 @@
 const db = require('../config/db');
 
-async function createEmailVerificationToken(userId, token, expiresAt) {
+async function createEmailVerificationToken(token, userId, expiresAt) {
   await db.query(
     `INSERT INTO email_verification_tokens (token, user_id, expires_at) VALUES ($1, $2, $3)`,
     [token, userId, expiresAt]
@@ -17,7 +17,7 @@ async function consumeEmailVerificationToken(token) {
   return rows[0]?.user_id || null;
 }
 
-async function createPasswordResetToken(userId, token, expiresAt) {
+async function createPasswordResetToken(token, userId, expiresAt) {
   await db.query(
     `INSERT INTO password_reset_tokens (token, user_id, expires_at) VALUES ($1, $2, $3)`,
     [token, userId, expiresAt]
