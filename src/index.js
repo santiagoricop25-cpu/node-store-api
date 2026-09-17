@@ -22,9 +22,23 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser());
+
+// FRONTEND_ORIGIN admite una lista separada por comas (ej: "https://tienda.ricops.com,https://admin.ricops.com")
+// para que varios frontends puedan hablar con esta misma API con cookies incluidas.
+const allowedOrigins = (process.env.FRONTEND_ORIGIN || '*')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_ORIGIN || '*',
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // llamadas sin origin (health checks, curl, etc.)
+      if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true, // necesario para que la cookie del refresh token viaje al frontend
   })
 );
