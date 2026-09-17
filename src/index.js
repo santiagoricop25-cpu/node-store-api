@@ -10,6 +10,10 @@ const rateLimit = require('express-rate-limit');
 const healthRoutes = require('./routes/health');
 const authRoutes = require('./routes/auth');
 const oauthRoutes = require('./routes/oauth');
+const productRoutes = require('./routes/products');
+const orderRoutes = require('./routes/orders');
+const adminRoutes = require('./routes/admin');
+const presenceRoutes = require('./routes/presence');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -56,9 +60,14 @@ app.use(
 app.use(healthRoutes);
 app.use(authRoutes);
 app.use(oauthRoutes);
+app.use(productRoutes);
+app.use(orderRoutes);
+app.use(adminRoutes);
+app.use(presenceRoutes);
 
-// A partir de aquí se van montando: /products (Fase 03), /cart y /orders
-// (Fase 04), /webhooks/wompi (Fase 05), /admin (Fase 06).
+// Pendiente: /webhooks/wompi (Fase 05, pagos en línea reales — requiere
+// que abras tu propia cuenta comercial en Wompi; por ahora el checkout
+// registra payment_method/payment_status y el admin los marca a mano).
 
 app.use((req, res) => {
   res.status(404).json({ error: 'not_found' });

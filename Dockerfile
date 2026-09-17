@@ -10,4 +10,7 @@ COPY . .
 
 EXPOSE 4000
 
-CMD ["node", "src/index.js"]
+# Corre las migraciones pendientes (idempotente — ya llevan registro de
+# cuáles se aplicaron) y luego arranca el servidor, así cada deploy queda
+# al día con la base de datos sin un paso manual en la terminal de Coolify.
+CMD ["sh", "-c", "node src/config/migrate.js && node src/index.js"]
