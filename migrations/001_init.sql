@@ -3,6 +3,10 @@
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+-- citext requiere esta extensión para comparar correos sin distinguir mayúsculas —
+-- debe crearse antes de cualquier tabla que use el tipo.
+CREATE EXTENSION IF NOT EXISTS "citext";
+
 CREATE TABLE IF NOT EXISTS users (
   id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   email         citext UNIQUE,
@@ -13,9 +17,6 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    timestamptz NOT NULL DEFAULT now(),
   updated_at    timestamptz NOT NULL DEFAULT now()
 );
-
--- citext requiere esta extensión para comparar correos sin distinguir mayúsculas
-CREATE EXTENSION IF NOT EXISTS "citext";
 
 CREATE TABLE IF NOT EXISTS auth_identities (
   id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
